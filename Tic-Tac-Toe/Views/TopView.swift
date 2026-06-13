@@ -27,7 +27,7 @@ struct TopView: View {
         NavigationStack {
             VStack(spacing: 40) {
                 // タイトル
-                Text("Tic-Tac-Toe")
+                Text("3目並べ")
                     .font(.system(size: 48, weight: .bold))
                     .foregroundColor(.primary)
                 
