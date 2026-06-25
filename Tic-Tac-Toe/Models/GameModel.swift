@@ -128,7 +128,35 @@ struct GameState {
         let emptyIndices = board.enumerated()
             .filter { $0.element == .empty }
             .map { $0.offset }
-        
+
+        // AIが勝てる場合は勝利
+        if let winIndex = findWinningMove(for: currentPlayer, in: emptyIndices) {
+            return winIndex
+        }
+
+        // 相手（人間プレイヤー）がリーチの場合はブロック
+        let humanPlayer = currentPlayer.opposite
+        if let blockIndex = findWinningMove(for: humanPlayer, in: emptyIndices) {
+            return blockIndex
+        }
+
         return emptyIndices.randomElement()
+    }
+
+    private func findWinningMove(for player: Player, in emptyIndices: [Int]) -> Int? {
+        let winPatterns: [[Int]] = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ]
+
+        for pattern in winPatterns {
+            let playerCells = pattern.filter { board[$0].player == player }
+            let emptyCells = pattern.filter { board[$0] == .empty }
+            if playerCells.count == 2, emptyCells.count == 1, let move = emptyCells.first {
+                return move
+            }
+        }
+        return nil
     }
 }
