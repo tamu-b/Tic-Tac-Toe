@@ -11,11 +11,13 @@ struct GameView: View {
     @State private var gameState: GameState
     @State private var isAIThinking = false
     @State private var navigateToResult = false
-    
+
     let mode: GameMode
-    
-    init(mode: GameMode) {
+    let onGoToTop: () -> Void
+
+    init(mode: GameMode, onGoToTop: @escaping () -> Void = {}) {
         self.mode = mode
+        self.onGoToTop = onGoToTop
         _gameState = State(initialValue: GameState(mode: mode))
     }
     
@@ -64,7 +66,8 @@ struct GameView: View {
                 ResultView(
                     result: result,
                     board: gameState.board,
-                    mode: mode
+                    mode: mode,
+                    onGoToTop: onGoToTop
                 )
             }
         }

@@ -11,10 +11,9 @@ struct ResultView: View {
     let result: GameResult
     let board: [Cell]
     let mode: GameMode
-    
-    @Environment(\.dismiss) private var dismiss
+    let onGoToTop: () -> Void
+
     @State private var navigateToGame = false
-    @State private var navigateToTop = false
     
     var body: some View {
         VStack(spacing: 40) {
@@ -47,7 +46,7 @@ struct ResultView: View {
                 }
                 
                 Button(action: {
-                    navigateToTop = true
+                    onGoToTop()
                 }) {
                     Text("トップに戻る")
                         .font(.title2)
@@ -66,10 +65,7 @@ struct ResultView: View {
         .padding(.top, 60)
         .navigationBarBackButtonHidden(true)
         .navigationDestination(isPresented: $navigateToGame) {
-            GameView(mode: mode)
-        }
-        .navigationDestination(isPresented: $navigateToTop) {
-            TopView()
+            GameView(mode: mode, onGoToTop: onGoToTop)
         }
     }
     
@@ -101,7 +97,8 @@ struct ResultView: View {
                 .occupied(.cross), .occupied(.cross), .empty,
                 .empty, .empty, .occupied(.cross)
             ],
-            mode: .twoPlayers
+            mode: .twoPlayers,
+            onGoToTop: {}
         )
     }
 }

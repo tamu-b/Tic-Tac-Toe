@@ -100,7 +100,7 @@ struct TopView: View {
             .padding(.top, 60)
             .animation(.easeInOut, value: selectedMode)
             .navigationDestination(isPresented: $navigateToGame) {
-                GameView(mode: createGameMode())
+                GameView(mode: createGameMode(), onGoToTop: { navigateToGame = false })
             }
         }
     }
